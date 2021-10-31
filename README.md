@@ -28,5 +28,5 @@ if(!checkPkg("devtools")) install.packages("devtools")
 library(devtools)
 if(!checkPkg("NNLM")) install_github("linxihui/NNLM")
 
-install_github("wguo-research/stCancer")
+install_github("Miaoyx323/stCancer")
 ```

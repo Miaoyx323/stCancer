@@ -14,7 +14,7 @@ After all the computational analyses finished, detailed and graphical reports we
 * R version: >= 4.0.0
 
 ## Current version
-* stCancer 1.0.0
+* stCancer 0.1.0
 
 ## Installation
 

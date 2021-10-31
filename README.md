@@ -27,6 +27,7 @@ if(!checkPkg("devtools")) install.packages("devtools")
 
 library(devtools)
 if(!checkPkg("NNLM")) install_github("linxihui/NNLM")
+if(!checkPkg("copykat")) install_github("navinlabcode/copykat")
 
 install_github("Miaoyx323/stCancer")
 ```

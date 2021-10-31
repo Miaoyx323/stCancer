@@ -1,0 +1,8 @@
+### `r h.i`.`r h.ii` Interaction analysis
+We use [`CellPhoneDB`](https://www.cellphonedb.org/) to analyze the interaction at the boundary of two clusters. The boundaries of clusters are detected automatically and those whose area is larger than `r interaction.region.threshold` are used to analyze interactions.
+
+The results of interaction analysis includes many area, please check detailed results in [interact/](./interact/)
+
+```{r echo=F}
+h.ii <- h.ii + 1
+```

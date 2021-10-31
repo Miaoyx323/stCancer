@@ -1,0 +1,10 @@
+### Interaction Analysis
+```{r area, echo=F, message=F, warning=F, fig.align="center", out.width='100%'}
+knitr::include_graphics(file.path(files[[i]], "area.png"))
+```
+<p align="right">(Hi-res image: <a href='./area.png'>view</a>)</p>
+
+```{r interaction, echo=F, message=F, warning=F, fig.align="center", out.width='100%'}
+knitr::include_graphics(file.path(files[[i]], "out/dot.png"))
+```
+<p align="right">(Hi-res image: <a href='./out/dot.png'>view</a>)</p>

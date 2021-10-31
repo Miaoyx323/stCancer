@@ -1,0 +1,29 @@
+### `r h.i`.`r h.ii` Cell type score
+
+In order to judge major microenvironment cell types, including endothelial cells, fibroblast, and immune cells (T cells, B cells, nature killer cells, and myeloid cells), we use marker genes to perform their distribution. The marker genes are as follow.
+
+<center>
+
+```{r echo=FALSE, results='asis'}
+cat("| Cell Type       | Markers                                        |\n", sep="")
+cat("| :-------------- | :--------------------------------------------- |\n", sep="")
+cat("| T cells         | CD3D, CD3E, CD3G                               |\n", sep="")
+cat("| B cells         | CD19, MS4A1, CD79A                             |\n", sep="")
+cat("| NK cell         | NCAM1, KLRF1, NCR1, KLRC1                      |\n", sep="")
+cat("| Myeloid cells   | ITGAX, CD33, CEACAM8, CD68, CD163              |\n", sep="")
+cat("| Endothelial     | CLDN5, PECAM1, CD34, FLT1, VWF, ENG, CDH5      |\n", sep="")
+cat("| Fibroblast      | COL1A2, FAP, PDPN, DCN, COL3A1, COL6A1, COL1A1 |\n", sep="")
+```
+
+</center>
+
+```{r celltype, echo=F, message=F, warning=F, dpi=500, fig.width=5, fig.height=4, fig.align="center", out.width='100%'}
+knitr::include_graphics(
+    file.path(savePath_basic, paste0("cell_type/cellTypeScore.png")))
+```
+<p align="right">(Hi-res image: <a href='./cell_type/cellTypeScore.png'>view</a>)</p>
+
+
+```{r echo=F}
+h.ii <- h.ii + 1
+```

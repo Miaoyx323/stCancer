@@ -1,0 +1,13 @@
+### `r h.i`.`r h.ii` Cell cycle estimation
+
+we investigated the cell cycle of tissue through the genes mentioned in [cellCycle-genes.txt](`r file.path(system.file(package = "stCancer"), "txt/cellCycle-genes.txt")`). Here is the scatter plot colored by estimated cell cycle score.
+
+```{r cellcycle, echo=F, message=F, warning=F, dpi=500, fig.width=5, fig.height=4, fig.align="center", out.width='70%'}
+knitr::include_graphics(
+    file.path(savePath_basic, paste0("phenotype/cellCycle.png")))
+```
+<p align="right">(Hi-res image: <a href='./phenotype/cellCycle.png'>view</a>)</p>
+
+```{r echo=FALSE}
+h.ii <- h.ii + 1
+```

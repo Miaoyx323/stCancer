@@ -1,0 +1,23 @@
+### `r h.i`.`r h.ii` NMF analysis
+In order to find the relationship between genes, we perform Non-negative Matrix Factorization by running `NNLM` functions.
+
+
+
+
+
+
+```{r NMF, echo=F, message=F, warning=F, dpi=500, fig.width=5, fig.height=4, fig.align="center", out.width='80%'}
+knitr::include_graphics(
+    file.path(savePath_basic, paste0("NMF/NMF-", rank, "-heatmap.png")))
+```
+<p align="right">(Hi-res image: <a href='./NMF/NMF-`r rank`-heatmap.png'>view</a>)</p>
+
+```{r NMFeach, echo=F, message=F, warning=F, dpi=500, fig.width=5, fig.height=4, fig.align="center", out.width='80%'}
+knitr::include_graphics(
+    file.path(savePath_basic, paste0("NMF/NMF-", rank, "-sp.png")))
+```
+<p align="right">(Hi-res image: <a href='./NMF/NMF-`r rank`-sp.png'>view</a>)</p>
+
+```{r echo=F}
+h.ii <- h.ii + 1
+```

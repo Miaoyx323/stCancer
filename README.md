@@ -20,13 +20,14 @@ After all the computational analyses finished, detailed and graphical reports we
 
 ```
 checkPkg <- function(pkg){
-    return(requireNamespace(pkg, quietly = TRUE))
+return(requireNamespace(pkg, quietly = TRUE))
 }
 if(!checkPkg("BiocManager")) install.packages("BiocManager")
 if(!checkPkg("devtools")) install.packages("devtools")
 
 library(devtools)
-library(BiocManager)
+if(!checkPkg("RcppArmadillo")) install.packages("RcppArmadillo")
+if(!checkPkg("RcppProgress")) install.packages("RcppProgress")
 if(!checkPkg("NNLM")) install_github("linxihui/NNLM")
 if(!checkPkg("copykat")) install_github("navinlabcode/copykat")
 if(!checkPkg("GSVA")) BiocManager::install("GSVA")

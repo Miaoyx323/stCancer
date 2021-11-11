@@ -26,8 +26,11 @@ if(!checkPkg("BiocManager")) install.packages("BiocManager")
 if(!checkPkg("devtools")) install.packages("devtools")
 
 library(devtools)
+library(BiocManager)
 if(!checkPkg("NNLM")) install_github("linxihui/NNLM")
 if(!checkPkg("copykat")) install_github("navinlabcode/copykat")
+if(!checkPkg("GSVA")) BiocManager::install("GSVA")
+if(!checkPkg("ComplexHeatmap")) BiocManager::install("ComplexHeatmap")
 
 install_github("Miaoyx323/stCancer")
 ```

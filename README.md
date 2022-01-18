@@ -41,5 +41,5 @@ if(!checkPkg("ComplexHeatmap")) BiocManager::install("ComplexHeatmap")
 install_github("Miaoyx323/stCancer")
 ```
 
-## Usage
-The vignette of HighlyRegionalGenes can be found in the project [wiki](https://github.com/Miaoyx323/stCancer/wiki).
+## Data
+Here, we provide some [example data of HCC](http://lifeome.net/supp/livercancer-st/data.htm). You can download them and run scripts in [wiki](hhh) to understand the workflow of stCancer.

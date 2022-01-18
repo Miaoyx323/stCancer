@@ -42,4 +42,4 @@ install_github("Miaoyx323/stCancer")
 ```
 
 ## Usage
-The vignette of HighlyRegionalGenes can be found in the project [wiki][https://github.com/Miaoyx323/stCancer/wiki]
+The vignette of HighlyRegionalGenes can be found in the project [wiki](https://github.com/Miaoyx323/stCancer/wiki).

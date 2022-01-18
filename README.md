@@ -42,4 +42,4 @@ install_github("Miaoyx323/stCancer")
 ```
 
 ## Data
-Here, we provide some [example data of HCC](http://lifeome.net/supp/livercancer-st/data.htm) (Wu R, Guo W, Qiu X, et al. Comprehensive analysis of spatial architecture in primary liver cancer. Sci Adv. 2021;7(51):eabg3750. doi:10.1126/sciadv.abg3750). You can download them and run scripts in [wiki](https://github.com/Miaoyx323/stCancer/wiki) to understand the workflow of stCancer.
+Here, we provide some [example data of HCC](http://lifeome.net/supp/livercancer-st/data.htm) ([Wu R, Guo W, Qiu X, et al. 2021](https://www.science.org/doi/10.1126/sciadv.abg3750)). You can download them and run scripts in [wiki](https://github.com/Miaoyx323/stCancer/wiki) to understand the workflow of stCancer.

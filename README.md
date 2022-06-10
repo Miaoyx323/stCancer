@@ -47,3 +47,9 @@ Here, we provide some example data of [HCC](http://lifeome.net/supp/livercancer-
 <!--
 You can download them and run scripts in [wiki](https://github.com/Miaoyx323/stCancer/wiki) to understand the workflow of stCancer.
 -->
+
+## Citation
+Please use the following citation:
+
+Wenbo Guo, Dongfang Wang, Shicheng Wang, Yiran Shan, Changyi Liu, Jin Gu, scCancer: a package for automated processing of single-cell RNA-seq data in cancer, Briefings in Bioinformatics, bbaa127, https://doi.org/10.1093/bib/bbaa127
+

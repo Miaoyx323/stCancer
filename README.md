@@ -41,6 +41,37 @@ if(!checkPkg("ComplexHeatmap")) BiocManager::install("ComplexHeatmap")
 install_github("Miaoyx323/stCancer")
 ```
 
+## Usage
+
+`stCancer` takes the output of spaceranger as input and outputs the preliminary analysis results of samples. 
+
+```
+library(stCancer)
+
+sample.name <- "ST_data"
+data.path <- "Path/to/the/outputs/of/Spaceranger"  # including 'filtered_feature_bc_matrix' and 'spatial' folders
+save.path <- "the/save/path"
+
+results <- stStatistics("Data", 
+                        dataPath = data.path, 
+                        savePath = save.path, 
+                        species = "human")
+object <- results$object
+
+results <- stAnnotation(object, 
+                        savePath = save.path, 
+                        species = "human", 
+                        bool.NMF = T, 
+                        bool.CellCycle = T, 
+                        bool.CellType = T, 
+                        bool.CNV = T, 
+                        bool.interaction = T, 
+                        bool.EMT = T, 
+                        bool.stem = T)
+object <- results$object
+```
+
+
 ## Data
 Here, we provide some example data of [HCC](http://lifeome.net/supp/livercancer-st/data.htm) from [Comprehensive analysis of spatial architecture in primary liver cancer](https://www.science.org/doi/10.1126/sciadv.abg3750). 
 
@@ -52,4 +83,7 @@ You can download them and run scripts in [wiki](https://github.com/Miaoyx323/stC
 Please use the following citation:
 
 Wenbo Guo, Dongfang Wang, Shicheng Wang, Yiran Shan, Changyi Liu, Jin Gu, scCancer: a package for automated processing of single-cell RNA-seq data in cancer, Briefings in Bioinformatics, bbaa127, https://doi.org/10.1093/bib/bbaa127
+
+RUI WU, WENBO GUO, XINYAO QIU,et al. Comprehensive analysis of spatial architecture in primary liver cancer. SCIENCE ADVANCES, 2021. DOI: 10.1126/sciadv.abg3750
+https://www.science.org/doi/10.1126/sciadv.abg3750
 

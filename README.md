@@ -52,7 +52,7 @@ sample.name <- "ST_data"
 data.path <- "Path/to/the/outputs/of/Spaceranger"  # including 'filtered_feature_bc_matrix' and 'spatial' folders
 save.path <- "the/save/path"
 
-results <- stStatistics("Data", 
+results <- stStatistics(sample.name, 
                         dataPath = data.path, 
                         savePath = save.path, 
                         species = "human")

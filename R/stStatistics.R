@@ -29,6 +29,7 @@ stStatistics <- function(sampleName,
                          dataPath,
                          savePath,
                          species = "human",
+                         h5 = FALSE,
                          crop = TRUE,
                          rm.isolated = TRUE,
                          region.threshold = 3,
@@ -75,6 +76,7 @@ stStatistics <- function(sampleName,
                           rm.isolated = rm.isolated,
                           region.threshold = region.threshold,
                           sampleName = sampleName,
+                          h5 = h5,
                           ...)
 
   ## ------ Quality control of spot ------

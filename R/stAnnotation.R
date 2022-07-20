@@ -237,11 +237,14 @@ stAnnotation <- function(object,
   if(!dir.exists(file.path(savePath_cluster, paste0("diff.expr.genes-", clst.resolution)))){
     dir.create(file.path(savePath_cluster, paste0("diff.expr.genes-", clst.resolution)), recursive = T)
   }
+  
+  
   for(ci in 1:nCluster){
-    cur.diff.genes <- subset(diff.expr.genes, cluster == ci)
+    cur.diff.genes <- subset(diff.expr.genes, cluster == unique(diff.expr.genes$cluster)[ci])
     cur.diff.genes <- cur.diff.genes[order(cur.diff.genes$avg_log2FC, decreasing = T), ]
     write.csv(cur.diff.genes,
-              file = file.path(savePath_cluster, paste0("diff.expr.genes-", clst.resolution, "/cluster", ci ,".csv")),
+              file = file.path(savePath_cluster, paste0("diff.expr.genes-", clst.resolution, 
+                                                        "/cluster_", unique(diff.expr.genes$cluster)[ci] ,".csv")),
               quote = F,
               row.names = F)
   }

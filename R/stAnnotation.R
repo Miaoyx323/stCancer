@@ -9,7 +9,8 @@
 #' @param rm.isolated A logical value indicating whether to remove isolated spots
 #' @param authorName A character string for authors name and will be shown in the report.
 #' @param genReport A logical value indicating whether to generate a .html/.md report (suggest to set TRUE).
-#'
+#' @param CNV.ref.object A reference seurat object used in inferCNV
+#' 
 #'
 #' @return A Seurat object after statistic
 #' @export
@@ -34,6 +35,7 @@ stAnnotation <- function(object,
                          cellTypeScore_select = "main",
                          geneSets = NULL,
                          CNV.analysis.func = "copyKAT",
+                         CNV.ref.object = NULL,
                          interaction.region.threshold = 20,
                          crop = TRUE,
                          verbose = F,
@@ -339,7 +341,8 @@ stAnnotation <- function(object,
     results.CNV <- runCNVAnalysis(object,
                                   savePath_malig,
                                   species = species,
-                                  analysis.func = CNV.analysis.func)
+                                  analysis.func = CNV.analysis.func, 
+                                  ref.object = CNV.ref.object)
     results.collector[["CNV"]] <- results.CNV$results
     plots.collector[["CNV"]] <- results.CNV$plots
     bool.CNV <- results.CNV$bool.completed

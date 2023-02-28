@@ -25,7 +25,6 @@ stAnnotation <- function(object,
                          savePath,
                          rm.mito = T,
                          rm.ribo = T,
-                         rm.ig = T,
                          topGeneNum = 10,
                          clst.resolution = 0.4,
                          n.markers = 5,
@@ -83,10 +82,6 @@ stAnnotation <- function(object,
   if(rm.ribo){
     ribo.genes <- grep('^RPL|^RPS|^MRPL|^MRPS', rownames(object), value = TRUE)
     object <- object[!rownames(object) %in% ribo.genes, ]
-  }
-  if(rm.ig){
-    ig.genes <- grep('^IG', rownames(object), value = TRUE)
-    object <- object[!rownames(object) %in% ig.genes, ]
   }
 
   ## ------ Seurat statistic pipeline ------

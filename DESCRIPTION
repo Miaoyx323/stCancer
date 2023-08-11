@@ -30,4 +30,8 @@ Imports:
     circlize,
     ComplexHeatmap, 
     R.utils, 
-    copykat
+    copykat,
+    homologene,
+    org.Hs.eg.db,
+    org.Mm.eg.db,
+    clusterProfiler

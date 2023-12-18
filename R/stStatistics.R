@@ -595,7 +595,7 @@ Read_Image <- function(image.dir,
         Class = 'VisiumV1',
         image = image,
         scale.factors = scalefactors(
-            spot = scale.factors$tissue_hires_scalef,
+            spot = scale.factors$spot_diameter_fullres,
             fiducial = scale.factors$fiducial_diameter_fullres,
             hires = scale.factors$tissue_hires_scalef,
             lowres = scale.factors$tissue_lowres_scalef

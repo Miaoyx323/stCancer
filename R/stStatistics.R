@@ -24,45 +24,6 @@
 #' @importFrom stats median quantile
 #' @importFrom utils read.delim read.table write.csv write.table read.csv
 #' @importFrom cowplot plot_grid
-#'
-
-# sampleName <- 'HCC-1L'
-# dataPath <- 'D:/data/lab_data/hcc/HCC-1L'
-# savePath <- 'D:/data/lab_data/results'
-# species = "human"
-# assay = 'Spatial'
-# slice = 'slice1'
-# h5 = FALSE
-# crop = TRUE
-# rm.isolated = TRUE
-# filter.matrix = TRUE
-# region.threshold = 3
-# to.upper = FALSE
-# authorName = NULL
-# genReport = TRUE
-# gene.column = 1
-
-
-# sampleName <- 'CID4290_spatial'
-# dataPath <- paste0('D:/data/stCancer_test/data/', sampleName)
-# savePath <- 'D:/data/stCancer_test/results'
-# res <- stStatistics(sampleName,
-#                     dataPath,
-#                     savePath,
-#                     h5 = F,
-#                     rm.isolated = F,
-#                     gene.column = 1,
-#                     genReport = F)
-# res <- stAnnotation(res$object,
-#                     savePath = savePath,
-#                     bool.NMF = F,
-#                     bool.CellType = F,
-#                     bool.CNV = F,
-#                     bool.interaction = F,
-#                     bool.tumor.feature = T,
-#                     genReport = F,
-#                     normalization.method = 'LogNormalize')
-
 stStatistics <- function(sampleName,
                          dataPath,
                          savePath,

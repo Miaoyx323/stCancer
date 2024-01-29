@@ -20,36 +20,6 @@
 #' @importFrom markdown markdownToHTML
 #' @importFrom stats median quantile
 #' @importFrom utils read.delim read.table write.csv write.table read.csv
-#'
-
-# rm.mito = T
-# rm.ribo = F
-# # rm.ig = T,
-# assay = NULL
-# normalization.method = 'SCTransform'
-# topGeneNum = 10
-# clst.resolution = 0.4
-# n.markers = 5
-# rank = 5
-# species = "human"
-# cellTypeScore_fun = "average"
-# cellTypeScore_select = "main"
-# geneSets = NULL
-# CNV.analysis.func = "copyKAT"
-# CNV.ref.object = NULL
-# interaction.region.threshold = 20
-# crop = TRUE
-# verbose = F
-# authorName = NULL
-# genReport = F
-# bool.NMF = F
-# bool.CellType = F
-# bool.CNV = F
-# bool.interaction = F
-# bool.tumor.feature = TRUE
-# savePath <- 'D:/data/lab_data/results'
-# object <- readRDS('D:/data/lab_data/results/HCC-1L/data/spatial_stat.RDS')
-
 stAnnotation <- function(object,
                          savePath,
                          rm.mito = T,

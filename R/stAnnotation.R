@@ -74,10 +74,10 @@ stAnnotation <- function(object,
         assay <- object@active.assay
     }
 
-    gene.manifest <- read.table(file.path(savePath_data, "geneManifest.txt"),
-                                header = T, sep = "\t", stringsAsFactors = F)
-    gene.manifest <- subset(gene.manifest, nSpot >= 3)
-    gene.manifest <- subset(gene.manifest, Annotation == "other")
+    # gene.manifest <- read.table(file.path(savePath_data, "geneManifest.txt"),
+    #                             header = T, sep = "\t", stringsAsFactors = F)
+    # gene.manifest <- subset(gene.manifest, nSpot >= 3)
+    # gene.manifest <- subset(gene.manifest, Annotation == "other")
 
     # remove mito, ribo or ig genes if needed
     if(rm.mito){
@@ -322,8 +322,7 @@ stAnnotation <- function(object,
 
         results.NMF <- runNMF(object = object,
                               savePath = savePath_NMF,
-                              rank = rank,
-                              crop = crop)
+                              rank = rank)
         object <- results.NMF$object
         results.collector[["NMF"]] <- results.NMF$results
         plots.collector[["NMF"]] <- results.NMF$plots

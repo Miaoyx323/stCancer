@@ -13,7 +13,7 @@
 #' @return A Seurat object after scoring
 #' @export
 #'
-#' @import Seurat ggplot2 GSVA
+#' @import Seurat ggplot2 GSVA cowplot
 #'
 
 cellTypeScore <- function(SeuratObject,
@@ -157,8 +157,8 @@ cellTypeScore <- function(SeuratObject,
     plots.collector[["cell.types"]] <- plot_list
     plots.collector[["cell.types.dr"]] <- plot_dr_list
 
-    total_plot <- plot_grid(plotlist = plot_list, ncol = getPlotCol(length(plot_list)))
-    total_dr_plot <- plot_grid(plotlist = plot_dr_list, ncol = getPlotCol(length(plot_dr_list)))
+    total_plot <- cowplot::plot_grid(plotlist = plot_list, ncol = getPlotCol(length(plot_list)))
+    total_dr_plot <- cowplot::plot_grid(plotlist = plot_dr_list, ncol = getPlotCol(length(plot_dr_list)))
 
     plots.collector[["total.plot"]] <- total_plot
     plots.collector[["total.plot.dr"]] <- total_dr_plot

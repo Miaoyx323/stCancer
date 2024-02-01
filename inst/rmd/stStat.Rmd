@@ -187,7 +187,7 @@ h.ii <- 1
 ## `r h.i` Output
 
 ### `r h.i`.`r h.ii` Threshold to filter spots
-In the process above, we use ` `r paste0("region.threshold : ", region.threshold)` ` to filter the isolated spots, and ` `r ncol(spatial)` ` spots are left.
+In the process above, we use ` `r paste0("region.threshold : ", region.threshold)` ` to filter the isolated spots, and ` `r ncol(object)` ` spots are left.
 
 ```{r echo=F}
 h.ii <- h.ii + 1

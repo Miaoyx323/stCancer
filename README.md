@@ -82,7 +82,7 @@ You can download them and run scripts in [wiki](https://github.com/Miaoyx323/stC
 ## Citation
 Please use the following citation:
 
-Wenbo Guo, Dongfang Wang, Shicheng Wang, Yiran Shan, Changyi Liu, Jin Gu, scCancer: a package for automated processing of single-cell RNA-seq data in cancer, Briefings in Bioinformatics, bbaa127, https://doi.org/10.1093/bib/bbaa127
+Chen Z, Miao Y, Tan Z, et al. scCancer2: data-driven in-depth annotations of the tumor microenvironment at single-level resolution[J]. Bioinformatics, 2024, 40(2): btae028.
 
 RUI WU, WENBO GUO, XINYAO QIU,et al. Comprehensive analysis of spatial architecture in primary liver cancer. SCIENCE ADVANCES, 2021. DOI: 10.1126/sciadv.abg3750
 https://www.science.org/doi/10.1126/sciadv.abg3750

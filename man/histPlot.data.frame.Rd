@@ -13,7 +13,7 @@ histPlot.data.frame(
 )
 }
 \value{
-
+plots
 }
 \description{
 Draw histogram of data.frame

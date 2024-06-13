@@ -13,7 +13,7 @@ histPlot(
 )
 }
 \value{
-
+plots
 }
 \description{
 Draw histogram of Seurat object

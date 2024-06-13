@@ -6,10 +6,10 @@
 \usage{
 Read_Image(
   image.dir,
+  image.name = "tissue_lowres_image.png",
   filter.matrix = TRUE,
   rm.isolated = T,
-  region.threshold = 3,
-  ...
+  region.threshold = 3
 )
 }
 \arguments{
@@ -21,8 +21,6 @@ Read_Image(
 
 \item{region.threshold}{A integer value, if the area of connected domain of spots are less than `region.threshold`,
 they will be removed.}
-
-\item{...}{}
 }
 \value{
 A VisiumV1 object

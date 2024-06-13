@@ -10,15 +10,24 @@ prepareCNV(
   assay = "Spatial",
   ref.object = NULL,
   species = "human",
-  genome = "hg19",
-  hg.mm.mix = F
+  genome = "hg19"
 )
 }
 \arguments{
-\item{hg.mm.mix}{}
+\item{SeuratObject}{A seurat object}
+
+\item{gene.manifest}{A dataframe of gene information}
+
+\item{assay}{Assay}
+
+\item{species}{Species}
+
+\item{genome}{Genome, hg38, hg19 or mm10}
+
+\item{ref.data}{The reference seurat object data}
 }
 \value{
-
+A list
 }
 \description{
 Get common genes in 'expr.data' and 'ref.data'

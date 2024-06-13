@@ -4,10 +4,10 @@
 \alias{getGeneManifest}
 \title{getGeneManifest}
 \usage{
-getGeneManifest(data.path)
+getGeneManifest(data.path, h5 = FALSE, filter.matrix = TRUE)
 }
 \value{
-
+A dataframe of gene information
 }
 \description{
 Read genes.tsv

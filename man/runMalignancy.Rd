@@ -14,8 +14,7 @@ runMalignancy(
   coor.names = c("tSNE_1", "tSNE_2"),
   ref.object = NULL,
   species = "human",
-  genome = "hg19",
-  hg.mm.mix = F
+  genome = "hg19"
 )
 }
 \arguments{

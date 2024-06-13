@@ -7,10 +7,12 @@
 genePropPlot(gene.manifest, expr.frac)
 }
 \arguments{
-\item{expr.frac}{}
+\item{gene.manifest}{A dataframe of gene information}
+
+\item{expr.frac}{A matrix including the expression fraction of each gene}
 }
 \value{
-
+plots
 }
 \description{
 Drow gene proportion

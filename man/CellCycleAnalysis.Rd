@@ -9,7 +9,9 @@ CellCycleAnalysis(SeuratObject, savePath = NULL, geneSets = NULL, ...)
 \arguments{
 \item{SeuratObject}{A Seurat object}
 
-\item{savePath}{}
+\item{savePath}{Path to save}
+
+\item{geneSets}{Gene sets for cell cycle analysis}
 }
 \value{
 A Seurat object after NMF

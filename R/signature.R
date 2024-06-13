@@ -3,11 +3,11 @@
 #' calculate the score of some cell types
 #'
 #' @param SeuratObject A Seurat object
-#' @param geneSets
-#' @param select
-#' @param assay
-#' @param method
-#' @param savePath
+#' @param geneSets Gene sets
+#' @param select Which level of cell types
+#' @param assay Assay
+#' @param method Method to calculate scores
+#' @param savePath Path to save
 #'
 #'
 #' @return A Seurat object after scoring
@@ -15,7 +15,6 @@
 #'
 #' @import Seurat ggplot2 GSVA cowplot
 #'
-
 cellTypeScore <- function(SeuratObject,
                           savePath = NULL,
                           geneSets = NULL,
@@ -77,8 +76,8 @@ cellTypeScore <- function(SeuratObject,
         }
         t.scores <- as.matrix(t.scores)
     }else if(method == "GSVA"){
-        tmp.data <- as.matrix(GetAssayData(SeuratObject,
-                                           slot = "scale.data"))
+        tmp.data <- as.matrix(Seurat::GetAssayData(SeuratObject,
+                                                   slot = "scale.data"))
         tmp.data <- tmp.data[VariableFeatures(SeuratObject), ]
         t.scores <- t(gsva(tmp.data, geneSets))
     }else{
@@ -190,10 +189,8 @@ cellTypeScore <- function(SeuratObject,
 #' calculate the score of cell cycle
 #'
 #' @param SeuratObject A Seurat object
-#' @param select
-#' @param assay
-#' @param method
-#' @param savePath
+#' @param geneSets Gene sets for cell cycle analysis
+#' @param savePath Path to save
 #'
 #'
 #' @return A Seurat object after NMF
@@ -250,13 +247,17 @@ CellCycleAnalysis <- function(SeuratObject,
                     bool.completed = bool.completed))
     }
 
-    p <- Spatial_Plot(SeuratObject,
-                      "CellCycle",
-                      discrete = F,
-                      crop = T,
-                      base.size = 8,
-                      pt.size = 1.6,
-                      colors = c("white", "#009b45"))
+    # p <- Spatial_Plot(SeuratObject,
+    #                   "CellCycle",
+    #                   discrete = F,
+    #                   crop = T,
+    #                   base.size = 8,
+    #                   pt.size = 1.6,
+    #                   colors = c("white", "#009b45"))
+    p <- SpatialFeature_Plot(SeuratObject,
+                             'CellCycle',
+                             legend.color = getDefaultFeatureColors(type = 'seq'),
+                             crop = T)
 
     plots.collector[["CellCycle"]] <- p
 
@@ -300,7 +301,7 @@ CellCycleAnalysis <- function(SeuratObject,
 #'
 #' @importFrom stats cor
 #'
-#' @return
+#' @return A list
 #' @export
 #'
 StemnessAnalysis <- function(SeuratObject,
@@ -337,13 +338,17 @@ StemnessAnalysis <- function(SeuratObject,
                     bool.completed = bool.completed))
     }
 
-    p <- Spatial_Plot(SeuratObject,
-                      "stem",
-                      discrete = F,
-                      crop = T,
-                      pt.size = 1.6,
-                      base.size = 8,
-                      colors = c("white", "#ff9000"))
+    # p <- Spatial_Plot(SeuratObject,
+    #                   "stem",
+    #                   discrete = F,
+    #                   crop = T,
+    #                   pt.size = 1.6,
+    #                   base.size = 8,
+    #                   colors = c("white", "#ff9000"))
+    p <- SpatialFeature_Plot(SeuratObject,
+                             'stem',
+                             legend.color = getDefaultFeatureColors(type = 'seq'),
+                             crop = T)
 
     plots.collector[["stem"]] <- p
 
@@ -385,10 +390,8 @@ StemnessAnalysis <- function(SeuratObject,
 #' calculate the score of EMT
 #'
 #' @param SeuratObject A Seurat object
-#' @param select
-#' @param assay
-#' @param method
-#' @param savePath
+#' @param geneSets Gene sets
+#' @param savePath Path to save
 #'
 #'
 #' @return A Seurat object after NMF
@@ -432,13 +435,17 @@ EMTAnalysis <- function(SeuratObject,
     }
 
 
-    p <- Spatial_Plot(SeuratObject,
-                      "EMT",
-                      discrete = F,
-                      crop = T,
-                      pt.size = 1.6,
-                      base.size = 8,
-                      colors = c("white", "#990099"))
+    # p <- Spatial_Plot(SeuratObject,
+    #                   "EMT",
+    #                   discrete = F,
+    #                   crop = T,
+    #                   pt.size = 1.6,
+    #                   base.size = 8,
+    #                   colors = c("white", "#990099"))
+    p <- SpatialFeature_Plot(SeuratObject,
+                             'SeuratObject',
+                             legend.color = getDefaultFeatureColors(type = 'seq'),
+                             crop = T)
 
     plots.collector[["EMT"]] <- p
 
@@ -479,10 +486,8 @@ EMTAnalysis <- function(SeuratObject,
 #' calculate the score of TLS
 #'
 #' @param SeuratObject A Seurat object
-#' @param select
-#' @param assay
-#' @param method
-#' @param savePath
+#' @param geneSets Gene sets for TLS analysis
+#' @param savePath Path to save
 #'
 #'
 #' @return A Seurat object after NMF
@@ -588,9 +593,9 @@ TLSAnalysis <- function(SeuratObject,
 #' calculate the score of tumor characters defined by cancerSEA
 #'
 #' @param object A Seurat object
-#' @param species
-#' @param method
-#' @param savePath
+#' @param species Species
+#' @param method AddModuleScore or average
+#' @param savePath Path to save
 #' @param crop The parameter of plotting function
 #'
 #'
@@ -634,8 +639,8 @@ TumorCharacters <- function(object,
             ggsave(file.path(savePath, paste0(feature, '.png')),
                    p,
                    dpi = 300,
-                   height = 5,
-                   width = 6)
+                   height = 4,
+                   width = 5)
         }
     }
 
@@ -651,7 +656,6 @@ TumorCharacters <- function(object,
 
 #' SpatialScoring
 #'
-#' @import object
 #' @export
 SpatialScoring <- function(object,
                            geneSets,

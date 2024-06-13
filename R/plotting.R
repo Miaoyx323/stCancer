@@ -28,7 +28,7 @@ SpatialFeature_Plot_single <- function(object,
 #'
 #' Draw continuous features in the spatial location
 #'
-#' @return
+#' @return plots
 #'
 #' @import ggplot2
 #' @import patchwork
@@ -106,7 +106,7 @@ SpatialDim_Plot_single <- function(object,
 #'
 #' Draw discrete features in the spatial location
 #'
-#' @return
+#' @return plots
 #'
 #' @import ggplot2
 #' @import patchwork
@@ -232,7 +232,7 @@ Feature_Plot_single <- function(object,
 #'
 #' Draw continuous features
 #'
-#' @return
+#' @return plots
 #'
 #' @import ggplot2 patchwork
 #'
@@ -267,7 +267,7 @@ Feature_Plot <- function(object,
 #'
 #' Draw histogram of Seurat object
 #'
-#' @return
+#' @return plots
 #'
 #'
 histPlot <- function(object,
@@ -286,7 +286,7 @@ histPlot <- function(object,
 #'
 #' Draw histogram of data.frame
 #'
-#' @return
+#' @return plots
 #'
 #'
 histPlot.data.frame <- function(data,
@@ -309,7 +309,7 @@ histPlot.data.frame <- function(data,
 #'
 #' Default ggplot config
 #'
-#' @return
+#' @return plots
 #'
 #' @import ggplot2
 #'
@@ -336,7 +336,7 @@ ggplot_config <- function(base.size = 8){
 #'
 #' Automatic calculate the points' size
 #'
-#' @return
+#' @return number
 #'
 #'
 getPointSize <- function(spm,
@@ -355,10 +355,10 @@ getPointSize <- function(spm,
 #'
 #' Drow gene proportion
 #'
-#' @param gene.manifest
-#' @param expr.frac
+#' @param gene.manifest A dataframe of gene information
+#' @param expr.frac A matrix including the expression fraction of each gene
 #'
-#' @return
+#' @return plots
 #'
 #' @import ggplot2
 #' @importFrom reshape2 melt
@@ -377,7 +377,7 @@ genePropPlot <- function(gene.manifest,
     # rownames(gene.manifest) <- gene.manifest$Symbol
     gene.manifest <- gene.manifest[gene.show, ]
 
-    rate.df.plot <- melt(as.data.frame(as.matrix(t(expr.frac[gene.show, ]))), id.vars = NULL)
+    rate.df.plot <- reshape2::melt(as.data.frame(as.matrix(t(expr.frac[gene.show, ]))), id.vars = NULL)
     rate.df.plot$Annotation <- factor(gene.manifest[as.character(rate.df.plot$variable), ]$Annotation,
                                       levels = c("mitochondrial", "ribosome", "dissociation", "other"), ordered = T)
     rate.df.plot$variable <- factor(rate.df.plot$variable,
@@ -443,9 +443,8 @@ genePropPlot <- function(gene.manifest,
 #'
 #' grid arrange
 #'
-#' @param
 #'
-#' @return
+#' @return plots
 #'
 #' @importFrom gridExtra arrangeGrob
 #' @importFrom grid unit.c grid.newpage grid.draw
@@ -466,143 +465,21 @@ grid_arrange_shared_legend <- function(...,
     gl <- c(gl, ncol = ncol, nrow = nrow)
 
     combined <- switch(position,
-                       "bottom" = arrangeGrob(do.call(arrangeGrob, gl),
+                       "bottom" = gridExtra::arrangeGrob(do.call(gridExtra::arrangeGrob, gl),
                                               legend,
                                               ncol = 1,
-                                              heights = unit.c(unit(1, "npc") - lheight, lheight)),
-                       "right" = arrangeGrob(do.call(arrangeGrob, gl),
+                                              heights = grid::unit.c(unit(1, "npc") - lheight, lheight)),
+                       "right" = gridExtra::arrangeGrob(do.call(gridExtra::arrangeGrob, gl),
                                              legend,
                                              ncol = 2,
-                                             widths = unit.c(unit(1, "npc") - lwidth, lwidth)))
-    grid.newpage()
-    grid.draw(combined)
+                                             widths = grid::unit.c(unit(1, "npc") - lwidth, lwidth)))
+    grid::grid.newpage()
+    grid::grid.draw(combined)
 
     # return gtable invisibly
     invisible(combined)
 }
 
-
-
-#' #' pointDRPlot
-#' #'
-#' #' plot features in a reduced dimensionality space
-#' #'
-#' #' @param object Seurat object
-#' #' @param feature
-#' #'
-#' #' @return
-#' #' @export
-#' #'
-#' #' @importFrom gridExtra arrangeGrob
-#' #'
-#' pointDRPlot <- function(object,
-#'                         feature,
-#'                         reduction.func = "tsne",
-#'                         colors = NULL,
-#'                         title = NULL,
-#'                         discrete = T,
-#'                         limit.quantile = 0,
-#'                         limit.q.nz = FALSE,
-#'                         point.type = 1,
-#'                         point.size = NULL,
-#'                         base.size = 6,
-#'                         legend.position = "right",
-#'                         legend.title = NULL){
-#'
-#'   if(is.null(object@reductions[[reduction.func]])){
-#'     stop("Error in 'pointDRPlot': 'reduction.func' ", reduction.func, " is not in Seurat object.\n")
-#'   }
-#'   if(!(point.type %in% c(1, 2))){
-#'     stop("Error in 'pointDRPlot': 'point.type' ", point.type, " is not allowed.\n")
-#'   }
-#'
-#'   if(is.null(legend.title)){
-#'     legend.title <- feature
-#'   }
-#'   if(is.null(colors)){
-#'     if(discrete){
-#'       colors <- getDefaultColors(length(unique(object@meta.data[[feature]])))
-#'     }else{
-#'       colors <- c("white", "red")
-#'     }
-#'   }
-#'
-#'   coor <- as.data.frame(object@reductions[[reduction.func]]@cell.embeddings)
-#'   feature <- as.data.frame(object@meta.data[[feature]])
-#'   colnames(feature) <- "feature"
-#'
-#'   data <- cbind.data.frame(coor, feature)
-#'
-#'   ratio <- diff(range(data[, 1])) / diff(range(data[, 2]))
-#'
-#'   fill.feature <- data$feature
-#'   if(!discrete){
-#'     if(limit.q.nz){
-#'       cur.features <- data$feature[data$feature > 0]
-#'       low.thres <- max(0, min(cur.features))
-#'       up.thres <- quantile(cur.features, 1 - limit.quantile)
-#'     }else{
-#'       low.thres <- quantile(data$feature, limit.quantile)
-#'       up.thres <- quantile(data$feature, 1 - limit.quantile)
-#'     }
-#'     fill.feature <- ifelse(fill.feature < low.thres, low.thres,
-#'                            ifelse(fill.feature > up.thres, up.thres, fill.feature))
-#'   }
-#'
-#'   p <- ggplot()
-#'
-#'   if(point.type == 1){
-#'     if(is.null(point.size)){ point.size <- 1 }
-#'     p <- p +
-#'       geom_point(data,
-#'                  mapping = aes(x = data[, 1],
-#'                                y = data[, 2],
-#'                                fill = fill.feature),
-#'                  shape = 21, size = point.size, stroke = 0.2, color = "lightgrey") +
-#'       coord_fixed(ratio = ratio) +
-#'       ggtitle(title) +
-#'       ggplot_config(base.size = base.size) +
-#'       labs(x = colnames(coor)[1], y = colnames(coor)[2]) +
-#'       labs(fill = legend.title) +
-#'       theme(legend.position = legend.position,
-#'             plot.title = element_text(size = 4 * base.size + 2, hjust = 0),)
-#'
-#'     if(discrete){
-#'       p <- p + scale_fill_manual(values = colors,
-#'                                  guide = guide_legend(override.aes = list(size = 3),
-#'                                                       keywidth = 0.1,
-#'                                                       keyheight = 0.15,
-#'                                                       default.unit = "inch"))
-#'     }else{
-#'       p <- p + scale_fill_gradientn(colors = colors)
-#'     }
-#'   }else if(point.type == 2){
-#'     if(is.null(point.size)){ point.size <- 0.2 }
-#'     p <- p + geom_point(data[, ],
-#'                         mapping = aes(x = data[, 1],
-#'                                       y = data[, 2],
-#'                                       color = fill.feature),
-#'                         shape = 16, size = point.size) +
-#'       coord_fixed(ratio = ratio) +
-#'       ggtitle(title) +
-#'       ggplot_config(base.size = base.size) +
-#'       labs(x = colnames(coor)[1], y = colnames(coor)[2]) +
-#'       labs(color = legend.title) +
-#'       theme(legend.position = legend.position,
-#'             plot.title = element_text(size = 4 * base.size + 2, hjust = 0),)
-#'
-#'     if(discrete){
-#'       p <- p + scale_color_manual(values = colors,
-#'                                   guide = guide_legend(override.aes = list(size = 3),
-#'                                                        keywidth = 0.1,
-#'                                                        keyheight = 0.15,
-#'                                                        default.unit = "inch"))
-#'     }else{
-#'       p <- p + scale_color_gradientn(colors = colors)
-#'     }
-#'   }
-#'   return(p)
-#' }
 
 
 #' preDEheatmap
@@ -611,7 +488,7 @@ grid_arrange_shared_legend <- function(...,
 #'
 #' @param object Seurat object
 #'
-#' @return
+#' @return plots
 #' @export
 #'
 #' @import Seurat
@@ -673,7 +550,7 @@ preDEheatmap <- function(object,
 #'
 #' @param num
 #'
-#' @return
+#' @return Number of columns of plots
 #'
 getPlotCol <- function(num){
     num_sqrt <- floor(sqrt(num))
@@ -688,7 +565,7 @@ getPlotCol <- function(num){
 #'
 #' @param spot.manifest
 #'
-#' @return
+#' @return plots
 #'
 clusterBarPlot <- function(spot.annotation,
                            sel.col = "spot.Type",
@@ -702,7 +579,7 @@ clusterBarPlot <- function(spot.annotation,
         spot.colors <- getDefaultColors(length(unique(spot.annotation[[sel.col]])))
     }
 
-    bar.df <- melt(table(spot.annotation[c(sel.col, "Cluster")]))
+    bar.df <- reshape2::melt(table(spot.annotation[c(sel.col, "Cluster")]))
     # bar.df$Cluster = factor(bar.df$Cluster,
     #                         levels = 0:(length(unique(bar.df$Cluster))-1))
     bar.df$Cluster = factor(bar.df$Cluster)
@@ -717,38 +594,4 @@ clusterBarPlot <- function(spot.annotation,
 
     return(p)
 }
-
-
-#' #' GeneSpatialPlot
-#' #'
-#' #' Plot gene expression level in spatial
-#' #'
-#' #' @param object Seurat object
-#' #' @param gene gene in object
-#' #'
-#' #' @return
-#' #' @export
-#' #'
-#' #' @import ggplot2
-#' #' @importFrom grid rasterGrob
-#' #' @importFrom dplyr tibble
-#' #' @importFrom dplyr %>%
-#' #'
-#' GeneSpatialPlot <- function(object,
-#'                             gene,
-#'                             ...){
-#'   tol.genes <- rownames(object)
-#'   if(!(gene %in% tol.genes)){
-#'     stop("No gene called ", gene)
-#'   }
-#'
-#'   object <- AddMetaData(object,
-#'                         as.data.frame(t(as.matrix(GetAssayData(object[gene, ])))),
-#'                         col.name = make.names(gene))
-#'
-#'   return(Spatial_Plot(object = object,
-#'                       feature = make.names(gene),
-#'                       discrete = F,
-#'                       ...))
-#' }
 

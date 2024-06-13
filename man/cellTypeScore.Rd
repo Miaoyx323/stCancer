@@ -9,17 +9,26 @@ cellTypeScore(
   savePath = NULL,
   geneSets = NULL,
   select = "main",
-  assay = "SCT",
+  assay = NULL,
   method = "average",
   species = "human",
   total.image.name = "cellTypeScore.png",
+  crop = TRUE,
   ...
 )
 }
 \arguments{
 \item{SeuratObject}{A Seurat object}
 
-\item{savePath}{}
+\item{savePath}{Path to save}
+
+\item{geneSets}{Gene sets}
+
+\item{select}{Which level of cell types}
+
+\item{assay}{Assay}
+
+\item{method}{Method to calculate scores}
 }
 \value{
 A Seurat object after scoring

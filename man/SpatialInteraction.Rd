@@ -5,31 +5,32 @@
 \title{SpatialInteraction}
 \usage{
 SpatialInteraction(
-  SeuratObject,
+  object,
   savePath,
-  genePath,
   analysis.type = "biggest",
   cluster = NULL,
   area.data.frame = NULL,
   species = "human",
+  label_key = "seurat_clusters",
   ...
 )
 }
 \arguments{
-\item{SeuratObject}{A Seurat object}
+\item{object}{A Seurat object}
 
 \item{savePath}{A path to store results}
-
-\item{genePath}{The path of features.tsv.gz}
 
 \item{analysis.type}{"biggest" means the function will analyze the interactions of the biggest cluster.
 "single" means the function will analyze the interaction of cluster `cluster`.
 "all" means the function will analyze all the clusters}
 
 \item{cluster}{Only when `analysis.type` is "single", this parameter means the cluster to analyze}
+
+\item{genePath}{The path of features.tsv.gz}
 }
 \value{
-
+A list containing a seuratObject, a list of results of intermediate process,
+a list of plots and a logical value to show whether the process completed successfully
 }
 \description{
 interaction

@@ -10,7 +10,7 @@ combine_spot(spot.manifest, mat)
 \item{spot.manifest}{}
 }
 \value{
-
+Spot manifest
 }
 \description{
 Combine spot.manifest and other matrix

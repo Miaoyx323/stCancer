@@ -7,7 +7,7 @@
 getDefaultColors(n = NULL, type = 1)
 }
 \value{
-
+A list of colors
 }
 \description{
 Get default colors if not required

@@ -16,7 +16,7 @@ clusterBarPlot(
 \item{spot.manifest}{}
 }
 \value{
-
+plots
 }
 \description{
 Draw

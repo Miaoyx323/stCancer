@@ -17,11 +17,15 @@ cat("| Fibroblast      | COL1A2, FAP, PDPN, DCN, COL3A1, COL6A1, COL1A1 |\n", se
 
 </center>
 
-```{r celltype, echo=F, message=F, warning=F, dpi=500, fig.width=5, fig.height=4, fig.align="center", out.width='100%'}
-knitr::include_graphics(
-    file.path(savePath_basic, paste0("cell_type/cellTypeScore.png")))
-```
+<center>
+    <img src=".\\cell_type\\cellTypeScore.png" width="80%"/>
+</center>
 <p align="right">(Hi-res image: <a href='./cell_type/cellTypeScore.png'>view</a>)</p>
+
+<center>
+    <img src=".\\cell_type\\dr_cellTypeScore.png" width="80%"/>
+</center>
+<p align="right">(Hi-res image: <a href='./cell_type/dr_cellTypeScore.png'>view</a>)</p>
 
 
 ```{r echo=F}

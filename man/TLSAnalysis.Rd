@@ -4,12 +4,21 @@
 \alias{TLSAnalysis}
 \title{TLSAnalysis}
 \usage{
-TLSAnalysis(SeuratObject, savePath = NULL, geneSets = NULL, ...)
+TLSAnalysis(
+  SeuratObject,
+  savePath = NULL,
+  geneSets = NULL,
+  method = "AddModuleScore",
+  crop = T,
+  ...
+)
 }
 \arguments{
 \item{SeuratObject}{A Seurat object}
 
-\item{savePath}{}
+\item{savePath}{Path to save}
+
+\item{geneSets}{Gene sets for TLS analysis}
 }
 \value{
 A Seurat object after NMF

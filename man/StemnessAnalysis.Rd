@@ -12,7 +12,7 @@ StemnessAnalysis(SeuratObject, savePath = NULL, geneSets = NULL, ...)
 \item{stem.sig}{An array of stemness signature. The default is NULL, and a prepared signature will be used.}
 }
 \value{
-
+A list
 }
 \description{
 Estimate cell stemness according to the Spearman correlation with stemness signature.

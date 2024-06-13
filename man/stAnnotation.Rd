@@ -9,16 +9,20 @@ stAnnotation(
   savePath,
   rm.mito = T,
   rm.ribo = T,
-  rm.ig = T,
+  assay = NULL,
+  normalization.method = "SCTransform",
+  ndims = 10,
   topGeneNum = 10,
-  clst.resolution = 0.4,
+  clst.resolution = 0.8,
   n.markers = 5,
   rank = 5,
   species = "human",
+  score.method = "AddModuleScore",
   cellTypeScore_fun = "average",
   cellTypeScore_select = "main",
   geneSets = NULL,
-  analysis.func = "copyKAT",
+  CNV.analysis.func = "copyKAT",
+  CNV.ref.object = NULL,
   interaction.region.threshold = 20,
   crop = TRUE,
   verbose = F,
@@ -28,29 +32,37 @@ stAnnotation(
   bool.CellType = TRUE,
   bool.CNV = TRUE,
   bool.interaction = TRUE,
-  bool.EMT = TRUE,
-  bool.CellCycle = TRUE,
-  bool.stem = TRUE
+  bool.tumor.feature = TRUE
 )
 }
 \arguments{
-\item{object}{A Seurat object}
+\item{object}{A Seurat object after stStatistics}
 
-\item{savePath}{A path to save the results files(suggest to create a foler named by sample name).}
+\item{savePath}{A path to save the results files(suggest to use the same path as stStatistics).}
 
-\item{rm.mito}{A logical value indicating whether to remove}
+\item{rm.mito}{A logical value indicating whether to remove mitochondrial genes}
+
+\item{rm.ribo}{A logical value indicating whether to remove ribosomal}
+
+\item{assay}{Assay}
+
+\item{normalization.method}{The normalization method, SCTransform or Normalization}
+
+\item{ndims}{The number of PCs used for analysis}
+
+\item{topGeneNum}{The number of top genes shown in the hvg figure}
+
+\item{CNV.ref.object}{A reference seurat object used in inferCNV}
 
 \item{crop}{A logical value indicating whether to crop the image during plotting}
 
 \item{authorName}{A character string for authors name and will be shown in the report.}
 
 \item{genReport}{A logical value indicating whether to generate a .html/.md report (suggest to set TRUE).}
-
-\item{rm.isolated}{A logical value indicating whether to remove isolated spots}
 }
 \value{
-A Seurat object after statistic
+A list of results
 }
 \description{
-perform statistic
+perform stAnnotation
 }

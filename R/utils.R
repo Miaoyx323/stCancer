@@ -2,7 +2,7 @@
 #'
 #' Get default colors if not required
 #'
-#' @return
+#' @return A list of colors
 #'
 #'
 getDefaultColors <- function(n = NULL, type = 1){
@@ -119,7 +119,7 @@ getDefaultFeatureColors <- function(type = 'seq',
 #'
 #' Read genes.tsv
 #'
-#' @return
+#' @return A dataframe of gene information
 #'
 #' @importFrom utils read.delim
 #'
@@ -148,7 +148,7 @@ getGeneManifest <- function(data.path, h5=FALSE, filter.matrix=TRUE){
 #'
 #' Annotate mito & ribo genes
 #'
-#' @return
+#' @return Gene manifest
 #'
 addGeneAnno <- function (gene.manifest,
                          species = "human"){
@@ -181,11 +181,11 @@ addGeneAnno <- function (gene.manifest,
 #'
 #' limit data between min and max
 #'
-#' @param object data
-#' @param object min
-#' @param object max
+#' @param data data
+#' @param min min
+#' @param max max
 #'
-#' @return
+#' @return A new data
 #'
 #'
 limitData <- function(data,
@@ -208,7 +208,7 @@ limitData <- function(data,
 #'
 #' @param spot.manifest
 #'
-#' @return
+#' @return Spot manifest
 #'
 combine_spot <- function(spot.manifest,
                          mat){
@@ -225,18 +225,18 @@ combine_spot <- function(spot.manifest,
 }
 
 
-#' filePathCheck
-#'
-#' check the format of the file path
-#'
-#' @param filePath
-#'
-#' @return
-#'
-#'
-filePathCheck <- function(filePath){
-    return(gsub("\\\\", "/", filePath))
-}
+#' #' filePathCheck
+#' #'
+#' #' check the format of the file path
+#' #'
+#' #' @param filePath
+#' #'
+#' #' @return filePath
+#' #'
+#' #'
+#' filePathCheck <- function(filePath){
+#'     return(gsub("\\\\", "/", filePath))
+#' }
 
 #' getMouseGene
 #'

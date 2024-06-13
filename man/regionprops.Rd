@@ -5,7 +5,7 @@
 \title{regionprops}
 \usage{
 regionprops(
-  SeuratObject,
+  object,
   cluster,
   region.select.method = "threshold",
   region.threshold = 20,
@@ -14,13 +14,13 @@ regionprops(
 )
 }
 \arguments{
-\item{SeuratObject}{A Seurat object}
+\item{object}{A Seurat object}
 
 \item{cluster}{The cluster to analyze}
 
 \item{region.threshold}{Only domains whose area are larger than `region.threshold` are remained.}
 
-\item{cluster.info}{The label to store cluster information in `SeuratObject@meta.data`}
+\item{cluster.info}{The label to store cluster information in `object@meta.data`}
 
 \item{slice}{}
 }

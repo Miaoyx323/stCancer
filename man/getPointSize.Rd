@@ -7,7 +7,7 @@
 getPointSize(spm, crop)
 }
 \value{
-
+number
 }
 \description{
 Automatic calculate the points' size

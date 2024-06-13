@@ -9,7 +9,7 @@ preDEheatmap(
   col.name = "seurat_clusters",
   genes = NULL,
   spots = NULL,
-  assay = "SCT",
+  assay = NULL,
   slot = "scale.data",
   min.value = -2.5,
   max.value = 2.5
@@ -19,7 +19,7 @@ preDEheatmap(
 \item{object}{Seurat object}
 }
 \value{
-
+plots
 }
 \description{
 Do preparation for heatmap

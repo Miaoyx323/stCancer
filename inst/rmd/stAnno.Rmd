@@ -1,7 +1,5 @@
 ---
 title: "stCancer"
-author: "wguo"
-date: "2021/1/1"
 output: html_document
 ---
 
@@ -51,47 +49,32 @@ output: html_document
 </style>
 
 
-```{r setting, include=FALSE}
+```{r setup, include=FALSE}
 options(knitr.table.format = "html") 
 options(scipen=10)
 knitr::opts_chunk$set(echo = TRUE, fig.path = savePath_basic)
 knitr::opts_knit$set(root.dir = savePath_basic)
 
-title <- "stCancer"
-if(!is.null(sampleName)){
-    title <- paste0(sampleName, "  -  ", title)
-}
-
-if(!is.null(authorName)){
-    userName <- authorName
-}else{
-    userName <- Sys.getenv("USERNAME")
-}
-reportMark <- Sys.time()
-if(userName != ""){
-    reportMark <- paste0(userName, " , ", reportMark)
-}
-
 h.i <- 1
 h.ii <- 1
 ```
 
-# `r title`
+# `r sampleName`
 --------------------------------
-<p align="right">`r reportMark`</p>
 
 
 ## `r h.i` Data preprocessing
 
-After the quality control, we perform following preprocessing steps based on some functions of the R package [`Seurat V3`](https://satijalab.org/seurat/).
+After the quality control, we perform following preprocessing steps based on some functions of the R package [`Seurat`](https://satijalab.org/seurat/). Data is normalized using `r normalization.method`.
 
 * **SCTransform.** Use this function as an alternative to the NormalizeData, FindVariableFeatures, ScaleData workflow.
 * **Highly variable genes.** Calcuate the average expression and dispersion of each gene across all cells to select highly variable genes(HVGs).
 
-```{r hvgPlot, echo=F, message=F, warning=F, dpi=500, fig.width=8, fig.height=4, fig.align="center", out.width='70%'}
-knitr::include_graphics(file.path(savePath_cluster, "hvg.png"))
-```
+<center>
+    <img src=".\\cluster\\hvg.png" width="40%"/>
+</center>
 <p align="right">(Hi-res image: <a href='./cluster/hvg.png'>view</a>)</p>
+
 * **PCA.** Perform principal component analysis (PCA) and select PCs to perform clustering and visualization.
 * **Visualiztion.** Using t-SNE or UMAP to persent each single spot in two-dimensional space.
 
@@ -112,16 +95,16 @@ The cluster information can be found in the meta.data `seurat_clusters` of the S
 
 Here is the t-SNE and UMAP plot colored by spot clusters. 
 
-```{r clusterPlot, echo=F, message=F, warning=F, dpi=500, fig.width=5, fig.height=4, fig.align="center", out.width='80%'}
-knitr::include_graphics(file.path(savePath_cluster, paste0("cluster-dr-", clst.resolution, ".png")))
-```
+<center>
+    <img src=".\\cluster\\cluster-dr-`r clst.resolution`.png" width="80%"/>
+</center>
 <p align="right">(Hi-res image: <a href='./cluster/cluster-dr-`r clst.resolution`.png'>view</a>)</p>
 
-Here is the t-SNE plot on the tissue image.
+Here is the result of clusters shown on the tissue image.
 
-```{r clusterPlotTissue, echo=F, message=F, warning=F, dpi=500, fig.width=5, fig.height=4, fig.align="center", out.width='80%'}
-knitr::include_graphics(file.path(savePath_cluster, paste0("cluster-sp-", clst.resolution, ".png")))
-```
+<center>
+    <img src=".\\cluster\\cluster-sp-`r clst.resolution`.png" width="80%"/>
+</center>
 <p align="right">(Hi-res image: <a href='./cluster/cluster-sp-`r clst.resolution`.png'>view</a>)</p>
 
 ```{r echo=F}
@@ -140,17 +123,13 @@ h.ii <- h.ii + 1
 ```{r total_interaction, child=system.file("rmd", "total_interaction.Rmd", package = "stCancer"), eval = bool.interaction}
 ```
 
-```{r stemness, child=system.file("rmd", "stemness.Rmd", package = "stCancer"), eval=bool.stem}
-```
-
-```{r cellCycle, child=system.file("rmd", "cellCycle.Rmd", package = "stCancer"), eval=bool.CellCycle}
-```
-
-```{r EMT, child=system.file("rmd", "EMT.Rmd", package = "stCancer"), eval=bool.EMT}
-```
-
 ```{r CNVAnalysis, child=system.file("rmd", "CNVAnalysis.Rmd", package = "stCancer"), eval = bool.CNV}
 ```
+
+```{r Phenotype, child=system.file("rmd", "Phenotype.Rmd", package = "stCancer"), eval = bool.tumor.feature}
+```
+
+
 
 
 
@@ -194,9 +173,9 @@ cat(h.ii, ". **Cell type informatrion file** : ", sep = "")
 cat("[cell_type](./cell_type/).\n", sep = "")
 h.ii <- h.ii + 1
 ```
-```{r echo=FALSE, results='asis', eval=(bool.stem | bool.CellCycle | bool.EMT)}
-cat(h.ii, ". **Phenotype information file** : ", sep = "")
-cat("[phenotype](./phenotype/).\n", sep = "")
+```{r echo=FALSE, results='asis', eval=bool.tumor.feature}
+cat(h.ii, ". **State information file** : ", sep = "")
+cat("[phenotype](./cancer_state/).\n", sep = "")
 h.ii <- h.ii + 1
 ```
 ```{r echo=FALSE, results='asis', eval=bool.interaction}

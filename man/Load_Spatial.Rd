@@ -14,7 +14,7 @@ Load_Spatial(
   h5 = FALSE,
   filter.matrix = TRUE,
   to.upper = FALSE,
-  ...
+  gene.column = 2
 )
 }
 \arguments{
@@ -37,8 +37,6 @@ they will be removed.}
 \item{filter.matrix}{Only keep spots that have been determined to be over tissue.}
 
 \item{to.upper}{Converts all feature names to upper case. Can be useful when analyses require comparisons between human and mouse gene names for example.}
-
-\item{...}{}
 }
 \value{
 A Seurat object

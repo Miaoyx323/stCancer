@@ -9,7 +9,9 @@ EMTAnalysis(SeuratObject, savePath = NULL, geneSets = NULL, ...)
 \arguments{
 \item{SeuratObject}{A Seurat object}
 
-\item{savePath}{}
+\item{savePath}{Path to save}
+
+\item{geneSets}{Gene sets}
 }
 \value{
 A Seurat object after NMF

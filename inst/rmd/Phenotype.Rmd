@@ -1,0 +1,35 @@
+### `r h.i`.`r h.ii` Phenotype analysis
+To investigate tumor heterogeneity, the tumor microenvironment was characterized using 14 phenotypic features provided in [`CancerSEA`](http://biocc.hrbmu.edu.cn/CancerSEA/).
+
+<center class="half">
+    <img src=".\\cancer_state\\Angiogenesis.png" width="32%"/>
+    <img src=".\\cancer_state\\Apoptosis.png" width="32%"/>
+    <img src=".\\cancer_state\\Cell_Cycle.png" width="32%"/>
+</center>
+
+<center class="half">
+    <img src=".\\cancer_state\\Differentiation.png" width="32%"/>
+    <img src=".\\cancer_state\\DNA_damage.png" width="32%"/>
+    <img src=".\\cancer_state\\DNA_repair.png" width="32%"/>
+</center>
+
+<center class="half">
+    <img src=".\\cancer_state\\EMT.png" width="32%"/>
+    <img src=".\\cancer_state\\Hypoxia.png" width="32%"/>
+    <img src=".\\cancer_state\\Inflammation.png" width="32%"/>
+</center>
+
+<center class="half">
+    <img src=".\\cancer_state\\Invasion.png" width="32%"/>
+    <img src=".\\cancer_state\\Metastasis.png" width="32%"/>
+    <img src=".\\cancer_state\\Proliferation.png" width="32%"/>
+</center>
+
+<center class="half">
+    <img src=".\\cancer_state\\Quiescence.png" width="32%"/>
+    <img src=".\\cancer_state\\Stemness.png" width="32%"/>
+</center>
+
+```{r echo=F}
+h.ii <- h.ii + 1
+```

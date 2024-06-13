@@ -13,7 +13,7 @@ grid_arrange_shared_legend(
 )
 }
 \value{
-
+plots
 }
 \description{
 grid arrange

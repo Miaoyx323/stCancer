@@ -1,3 +1,31 @@
+#' SpatialStructureDetection
+#'
+#' Detect spatial structures in the tissue using global and local Morans' I.
+#'
+#' @param object A Seurat object after stStatistics
+#' @param feature The features (genes) of the spatial structure
+#' @param slice Slice
+#' @param global.Moran.I The threshold for global Morans' I. If the calculated global Morans' I is less than `global.Moran.I`,
+#' it is considered that no corresponding spatial structure exists in the tissue
+#' @param p.adjust.method The method used to adjust p values
+#' @param p.thres.local The threshold for p values of local Morans' I
+#' @param p.adj.thres.local The threshold for adjusted p values of local Morans' I
+#' @param p.thres.z.score The threshold for z scores of local Morans' I
+#' @param median.filter Whether to filter the results using the median of feature scores
+#' @param z.score.filter Whether to filter the results based on z-scores
+#'
+#' @param crop A logical value indicating whether to crop the image during plotting
+#' @param CNV.ref.object A reference seurat object used in inferCNV
+#' @param authorName A character string for authors name and will be shown in the report.
+#' @param genReport A logical value indicating whether to generate a .html/.md report (suggest to set TRUE).
+#'
+#'
+#' @return A Seuratobject with results
+#' @export
+#'
+#' @import Seurat
+#' @import ape
+#' @import spdep
 SpatialStructureDetection <- function(
         object,
         feature,
@@ -12,23 +40,23 @@ SpatialStructureDetection <- function(
 ){
     require(Seurat)
     require(SeuratObject)
-    
+
     pos <- GetTissueCoordinates(object[[slice]])
     pos.dist <- dist(x = pos)
     pos.dist.mat <- as.matrix(x = pos.dist)
-    
+
     weights <- 1 / pos.dist.mat^2
-    
+
     diag(x = weights) <- 0
     pos.dist.mat.min <- min(pos.dist.mat[pos.dist.mat > 0])
     weights[pos.dist.mat > pos.dist.mat.min * 2.5] <- 0
-    
+
     ROWSUM <- rowSums(weights)
     ROWSUM[ROWSUM == 0] <- 1
     weights <- weights / ROWSUM
-    
+
     X <- scale(object[[feature]])[, 1]
-    
+
     global.res <- RunGlobalMoransI(X = X,
                                    weights = weights)
     if(global.res$I < global.Moran.I){
@@ -36,9 +64,9 @@ SpatialStructureDetection <- function(
                      ', less than the global threshold ', global.Moran.I))
         return(object)
     }
-    
+
     print(paste0('I: ', global.res$I))
-    
+
     local.res <- RunLocalMoransI(X = X,
                                  weights = weights,
                                  p.adjust.method = p.adjust.method)
@@ -47,7 +75,7 @@ SpatialStructureDetection <- function(
     if(median.filter){
         local.res['area.MoransI'] <- local.res['area.MoransI'] & (X > median(X))
     }
-    
+
     if(z.score.filter){
         local.res['area.filter'] <- FALSE
         tmp.object <- object[, local.res['area.MoransI'] == TRUE]
@@ -58,10 +86,10 @@ SpatialStructureDetection <- function(
         ) < p.thres.z.score
     }else{
         local.res['area.filter'] <- FALSE
-        local.res['area.filter'] <- (local.res$area.MoransI & 
+        local.res['area.filter'] <- (local.res$area.MoransI &
                                          (local.res$P.adj < p.adj.thres.local))
     }
-    
+
     colnames(local.res) <- paste0(feature, '.', colnames(local.res))
     object <- AddMetaData(object,
                           local.res)
@@ -91,22 +119,22 @@ RunLocalMoransI <- function(
                              ncol = 5))
     rownames(res) <- names(X)
     colnames(res) <- c('I', 'EI', 'VarI', 'ZI', 'P.local')
-    
+
     # remove isolated areas
     ROWSUM <- rowSums(weights)
     X.use <- X[ROWSUM != 0]
     weights.use <- weights[ROWSUM != 0, ROWSUM != 0]
-    
+
     suppressMessages(suppressWarnings(
         listw <- mat2listw(weights.use)
     ))
-    
+
     tmp <- localmoran(X.use, listw)
     colnames(tmp) <- c('I', 'EI', 'VarI', 'ZI', 'P.local')
-    
+
     res[rownames(tmp), ] <- tmp
     res[which(rowSums(is.na(res)) > 0), ] <- c(0,0,0,0,1)
-    
+
     res <- as.data.frame(res)
     res$P.adj <- p.adjust(res$P,
                           method = p.adjust.method)

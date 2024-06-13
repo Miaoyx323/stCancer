@@ -6,10 +6,16 @@
 #' @param dataPath A path containing the cell ranger processed data.
 #' Under this path, folders 'filtered_feature_bc_matrix' and 'raw_feature_bc_matrix' exist generally.
 #' @param savePath A path to save the results files(suggest to create a foler named by sample name).
+#' @param species human or mouse
+#' @param assay The name of assay of SeuratObject
+#' @param slice The name of slice of SeuratObject
+#' @param h5 Whether to read h5 file or file folder
+#' @param gene.column If reading file folder, which column is genes
 #' @param crop A logical value indicating whether to crop the image during plotting
 #' @param rm.isolated A logical value indicating whether to remove isolated spots
 #' @param region.threshold A integer value, if the area of connected domain of spots are less than `region.threshold`,
 #' they will be removed.
+#' @param to.upper Whether to capitalize gene names
 #' @param authorName A character string for authors name and will be shown in the report.
 #' @param genReport A logical value indicating whether to generate a .html/.md report (suggest to set TRUE).
 #'
@@ -37,15 +43,17 @@ stStatistics <- function(sampleName,
                          filter.matrix = TRUE,
                          region.threshold = 3,
                          to.upper = FALSE,
+                         min.gene = 200,
+                         min.nUMI = 500,
+                         max.gene = Inf,
+                         max.nUMI = Inf,
+                         min.spot = 3,
                          authorName = NULL,
                          genReport = TRUE){
 
     message("[", Sys.time(), "] START: RUN stStatistics")
 
     print(sampleName)
-
-    dataPath <- filePathCheck(dataPath)
-    savePath <- filePathCheck(savePath)
 
     dataPath <- R.utils::getAbsolutePath(dataPath)
     savePath <- R.utils::getAbsolutePath(savePath)
@@ -108,9 +116,15 @@ stStatistics <- function(sampleName,
     results.collector[["ribo.genes"]] <- ribo.genes
     # results.collector[["ig.genes"]] <- ig.genes
 
-    mito.percent <- Matrix::colSums(object[mito.genes, ]) / Matrix::colSums(object)
+    suppressWarnings(
+        mito.percent <- Matrix::colSums(Seurat::GetAssayData(object)[mito.genes, ]) /
+            Matrix::colSums(Seurat::GetAssayData(object))
+    )
     mito.percent[is.na(mito.percent)] = 0
-    ribo.percent <- Matrix::colSums(object[ribo.genes, ]) / Matrix::colSums(object)
+    suppressWarnings(
+        ribo.percent <- Matrix::colSums(Seurat::GetAssayData(object)[ribo.genes, ]) /
+            Matrix::colSums(Seurat::GetAssayData(object))
+    )
     ribo.percent[is.na(ribo.percent)] = 0
     # ig.percent <- Matrix::colSums(object[ig.genes, ]) / Matrix::colSums(object)
     # ig.percent[is.na(ig.percent)] = 0
@@ -237,43 +251,31 @@ stStatistics <- function(sampleName,
                     height = 5,
                     width = 11)
 
-    # p.ig.hist <- histPlot(object,
-    #                       feature = "ig.percent",
-    #                       color = "#0099CC",
-    #                       xlines = c()) +
-    #     labs(title = sampleName)
-    # p.ig.st <- Spatial_Plot(object,
-    #                         feature = "ig.percent",
-    #                         show.tissue = F,
-    #                         crop = crop,
-    #                         title = sampleName,
-    #                         legend.title = "ig.percent",
-    #                         colors = myPalette(100),
-    #                         discrete = F,
-    #                         base.size = 8,
-    #                         pt.size = 1.6,
-    #                         ...)
-    # p.ig <- plot_grid(p.ig.hist, p.ig.st)
-    #
-    # plots.collector[["ig_hist"]] <- p.ig.hist
-    # plots.collector[["ig_st"]] <- p.ig.st
-    # plots.collector[["ig_comb"]] <- p.ig
-    #
-    # ggplot2::ggsave(filename = file.path(savePath_qc, "ig-hist.png"),
-    #                 p.ig.hist,
-    #                 dpi = 300,
-    #                 height = 5,
-    #                 width = 6)
-    # ggplot2::ggsave(filename = file.path(savePath_qc, "ig-sp.png"),
-    #                 p.ig.st,
-    #                 dpi = 300,
-    #                 height = 5,
-    #                 width = 6)
-    # ggplot2::ggsave(filename = file.path(savePath_qc, "ig-npc.png"),
-    #                 p.ig,
-    #                 dpi = 300,
-    #                 height = 5,
-    #                 width = 11)
+    # QC based on thresholds
+    object$Quality <- ifelse(object[[paste0('nCount_', assay)]] > max.nUMI | object[[paste0('nCount_', assay)]] < min.nUMI |
+                                 object[[paste0('nFeature_', assay)]] > max.gene | object[[paste0('nFeature_', assay)]] < min.gene,
+                             'Low',
+                             'High')
+    suppressMessages(suppressWarnings(
+        p.quality.spatial <- SpatialDimPlot(object, group.by = 'Quality',
+                                            pt.size.factor = 1.6, stroke = NA) +
+            theme(legend.position = 'right',
+                  legend.key = element_blank()) +
+            scale_fill_manual(
+                name = 'Quality',
+                values = c('Low'='#377EB8','High'='#E41A1C')
+            ) +
+            guides(fill = guide_legend(override.aes = list(size = 4)))
+    ))
+    ggplot2::ggsave(filename = file.path(savePath_qc, "Quality.png"),
+                    p.quality.spatial,
+                    width = 5,
+                    height = 5,
+                    dpi = 300)
+    print('Filtering spots with low quality...')
+    suppressWarnings(
+        object <- object[, object$Quality == 'High']
+    )
 
 
     ## ------ Gene statistic ------
@@ -299,8 +301,11 @@ stStatistics <- function(sampleName,
     gene.manifest <- addGeneAnno(gene.manifest = gene.manifest,
                                  species = species)
 
-
-    expr.data <- object@assays[[assay]]@counts
+    if(class(object@assays[[1]])[1] == 'Assay5'){
+        expr.data <- Seurat::GetAssayData(object, assay = assay, layer = 'counts')
+    }else{
+        expr.data <- Seurat::GetAssayData(object, assay = assay, slot = 'counts')
+    }
     nSpot <- Matrix::rowSums(expr.data > 0)
     detect.rate <- nSpot / dim(expr.data)[2]
     expr.frac <- expr.data / Matrix::colSums(expr.data)
@@ -315,25 +320,6 @@ stStatistics <- function(sampleName,
     suppressMessages(suppressWarnings(
         p.geneProp <- genePropPlot(gene.manifest, expr.frac)
     ))
-
-    # expr.data <- as.data.frame(t(as.matrix(object@assays[[assay]]@counts)))
-    # # expr.data <- as.data.frame(t(Seurat::Read10X(file.path(dataPath, "filtered_feature_bc_matrix"))))
-    #
-    # nSpot <- Matrix::colSums(expr.data > 0)
-    # detect.rate <- nSpot / dim(expr.data)[1]
-    #
-    # expr.frac <- expr.data / Matrix::rowSums(expr.data)
-    # prop.median <- rep(0, length(nSpot))
-    # names(prop.median) <- names(nSpot)
-    # tmp.sel.genes <- names(nSpot)[nSpot >= dim(expr.frac)[1] / 2]
-    # prop.median[tmp.sel.genes] <- apply(expr.frac[, tmp.sel.genes], 2, stats::median)
-    # prop.median <- apply(expr.frac, 2, stats::median)
-
-    # gene.manifest$nSpot <- nSpot
-    # gene.manifest$detect.rate <- detect.rate
-    # gene.manifest$prop.median <- prop.median
-    #
-    # p.geneProp <- genePropPlot(gene.manifest, t(expr.frac))
 
     plots.collector[["geneProp"]] <- p.geneProp
 
@@ -401,7 +387,21 @@ stStatistics <- function(sampleName,
                 row.names = F)
 
     gene.manifest <- gene.manifest[rownames(object), ]
-    object@assays[[assay]]@meta.features <- gene.manifest
+    if(class(object@assays[[1]])[1] == 'Assay5'){
+        object@assays[[assay]]@meta.data <- gene.manifest
+    }else{
+        object@assays[[assay]]@meta.features <- gene.manifest
+    }
+
+    print('Filtering out genes with low frequency...')
+    suppressWarnings(
+        nSpot <- data.frame(nSpot = rowSums(as.matrix(Seurat::GetAssayData(object) > 0)))
+    )
+    filtered_genes <- rownames(nSpot)[nSpot$nSpot > min.spot]
+    suppressWarnings(
+        object <- object[filtered_genes, ]
+    )
+
     saveRDS(object, file.path(savePath_data, "spatial_stat.RDS"))
 
     if(genReport){
@@ -453,6 +453,10 @@ Load_Spatial <- function(data.dir,
         warning("'Load_Spatial' accepts only one 'data.dir'", immediate. = TRUE)
         data.dir <- data.dir[1]
     }
+    if(!file.exists(data.dir)) {
+        stop(paste0("No such file or directory: ", "'", data.dir,
+                    "'"))
+    }
     if(!h5){
         if(filter.matrix){
             data <- as.data.frame(Seurat::Read10X(file.path(data.dir, "filtered_feature_bc_matrix/"),
@@ -476,23 +480,6 @@ Load_Spatial <- function(data.dir,
                          rm.isolated = rm.isolated,
                          region.threshold = region.threshold)
     image <- t.list[[1]]
-
-    # tissue.positions.path <- Sys.glob(paths = file.path(file.path(data.dir, "spatial"),
-    #                                                     'tissue_positions*'))
-    # tissue.positions <- read.csv(
-    #     file = tissue.positions.path,
-    #     col.names = c('barcodes', 'tissue', 'row', 'col', 'imagerow', 'imagecol'),
-    #     header = ifelse(basename(tissue.positions.path) == 'tissue_position.csv',
-    #                     TRUE,
-    #                     FALSE),
-    #     as.is = TRUE,
-    #     row.names = 1
-    # )
-
-    # image@scale.factors$crop.row.min <- min(tissue.positions$imagerow)
-    # image@scale.factors$crop.row.max <- max(tissue.positions$imagerow)
-    # image@scale.factors$crop.col.min <- min(tissue.positions$imagecol)
-    # image@scale.factors$crop.col.max <- max(tissue.positions$imagecol)
 
     barcodes <- intersect(t.list[[2]], colnames(data))
     data <- data[, barcodes]

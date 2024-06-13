@@ -3,10 +3,9 @@ In order to extract the features of each cluster, we perform differentially expr
 
 Here is a heatmap plot showing the top `r n.markers` differentially expressed genes for every cluster compared to all remaining cells. All information of differentially expressed genes can be found [here](./cluster/diff.expr.genes-`r clst.resolution`/).
 
-```{r DEplot, echo=F, message=F, warning=F, dpi=800, fig.width=8, fig.height=DEplot.height}
-knitr::include_graphics(
-    file.path(savePath_cluster, paste0("DE-heatmap-", clst.resolution, ".png")))
-```
+<center>
+    <img src=".\\cluster\\DE-heatmap-`r clst.resolution`.png" width="80%"/>
+</center>
 <p align="right">(Hi-res image: <a href="./cluster/DE-heatmap-`r clst.resolution`.png">view</a>)</p>
 
 ```{r echo=F}

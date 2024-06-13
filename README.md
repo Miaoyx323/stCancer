@@ -37,6 +37,10 @@ if(!checkPkg("knitr")) BiocManager::install("knitr")
 if(!checkPkg("GSVA")) BiocManager::install("GSVA")
 if(!checkPkg("pheatmap")) BiocManager::install("pheatmap")
 if(!checkPkg("ComplexHeatmap")) BiocManager::install("ComplexHeatmap")
+if(!checkPkg("ClusterProfiler")) BiocManager::install("ClusterProfiler")
+if(!checkPkg("org.Hs.eg.db")) BiocManager::install("org.Hs.eg.db")
+if(!checkPkg("org.Mm.eg.db")) BiocManager::install("org.Mm.eg.db")
+if(!checkPkg("glmGamPoi")) BiocManager::install('glmGamPoi')
 
 install_github("Miaoyx323/stCancer")
 ```

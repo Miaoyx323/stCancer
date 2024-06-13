@@ -1,10 +1,15 @@
 ### Interaction Analysis
-```{r area, echo=F, message=F, warning=F, fig.align="center", out.width='100%'}
-knitr::include_graphics(file.path(files[[i]], "area.png"))
-```
+
+The interactions between the following regions have been analyzed.
+
+<center>
+    <img src=".\\area.png" width="80%"/>
+</center>
 <p align="right">(Hi-res image: <a href='./area.png'>view</a>)</p>
 
-```{r interaction, echo=F, message=F, warning=F, fig.align="center", out.width='100%'}
-knitr::include_graphics(file.path(files[[i]], "out/dot.png"))
-```
+The results are as follows.
+
+<center>
+    <img src=".\\out\\dot.png" width="80%"/>
+</center>
 <p align="right">(Hi-res image: <a href='./out/dot.png'>view</a>)</p>

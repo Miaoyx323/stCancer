@@ -7,7 +7,7 @@
 addGeneAnno(gene.manifest, species = "human")
 }
 \value{
-
+Gene manifest
 }
 \description{
 Annotate mito & ribo genes

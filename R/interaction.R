@@ -139,7 +139,9 @@ regionprops <- function(object,
 #'
 #' @import org.Hs.eg.db org.Mm.eg.db
 #' @import clusterProfiler
-#' @return
+#' @importFrom reshape2 melt
+#' @return A list containing a seuratObject, a list of results of intermediate process,
+#' a list of plots and a logical value to show whether the process completed successfully
 #' @export
 #'
 SpatialInteraction <- function(object,

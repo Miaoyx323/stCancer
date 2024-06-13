@@ -1,7 +1,5 @@
 ---
 title: "stCancer"
-author: "wguo"
-date: "2021/1/1"
 output: html_document
 ---
 
@@ -50,35 +48,18 @@ output: html_document
     }
 </style>
 
-
-```{r setting, include=FALSE}
+```{r setup, include=FALSE}
 options(knitr.table.format = "html") 
 options(scipen=10)
 knitr::opts_chunk$set(echo = TRUE, fig.path = savePath_basic)
 knitr::opts_knit$set(root.dir = savePath_basic)
 
-title <- "stCancer"
-if(!is.null(sampleName)){
-    title <- paste0(sampleName, "  -  ", title)
-}
-
-if(!is.null(authorName)){
-    userName <- authorName
-}else{
-    userName <- Sys.getenv("USERNAME")
-}
-reportMark <- Sys.time()
-if(userName != ""){
-    reportMark <- paste0(userName, " , ", reportMark)
-}
-
 h.i <- 1
 h.ii <- 1
 ```
 
-# `r title`
+# `r sampleName`
 --------------------------------
-<p align="right">`r reportMark`</p>
 
 
 ## `r h.i` Spot statistics
@@ -97,10 +78,10 @@ if(file.exists(file.path(dataPath, "web_summary.html"))){
 ### `r h.i`.`r h.ii` The number of UMIs and detected genes in spots
 
 We display `nUMI` (total number of UMIs) and `nGene` (total number of detected genes) here.
- 
-```{r sp, echo=F, message=F, warning=F, dpi=300, fig.height=2.5, fig.width=8}
-knitr::include_graphics(file.path(savePath_basic, "QC/basic.png"))
-```
+
+<center>
+    <img src=".\\QC\\basic.png" width="90%"/>
+</center>
 <p align='right' style='margin-top:3px'>(Hi-res image: <a href='./QC/basic.png')>view</a>)</p>
 
 
@@ -121,12 +102,11 @@ The number of genes expressed in at least one cell : ` `r sum(nSpot > 0)` `.
 ### `r h.i`.`r h.ii` Mitochondrial genes
 Summary of mitochondrial genes percentage (`mito.percent`) in cells:
 ```{r mito.summary, echo=F}
-format(summary(spatial@meta.data[["mito.percent"]]), digits = 3)
+format(summary(object@meta.data[["mito.percent"]]), digits = 3)
 ```
-
-```{r ribo, echo=FALSE, message=F, dpi=300, fig.height=4, fig.width=4, fig.align="center", out.width='70%'}
-knitr::include_graphics(file.path(savePath_basic, "QC/mito-npc.png"))
-```
+<center>
+    <img src=".\\QC\\mito-npc.png" width="50%"/>
+</center>
 <p align='right' style='margin-top:3px'>(Hi-res image: <a href='./QC/mito-npc.png'>view</a>)</p>
 
 
@@ -138,12 +118,11 @@ h.ii <- h.ii + 1
 ### `r h.i`.`r h.ii` Ribosome genes
 Summary of ribosome genes percentage (`ribo.percent`) in cells:
 ```{r ribo.summary, echo=F}
-format(summary(spatial@meta.data[["ribo.percent"]]), digits = 3)
+format(summary(object@meta.data[["ribo.percent"]]), digits = 3)
 ```
-
-```{r mito, echo=FALSE, message=F, dpi=300, fig.height=4, fig.width=4, fig.align="center", out.width='70%'}
-knitr::include_graphics(file.path(savePath_basic, "QC/ribo-npc.png"))
-```
+<center>
+    <img src=".\\QC\\ribo-npc.png" width="50%"/>
+</center>
 <p align='right' style='margin-top:3px'>(Hi-res image: <a href='./QC/ribo-npc.png'>view</a>)</p>
 
 ```{r echo=F}
@@ -163,17 +142,16 @@ we calculate some metrics as shown below.
 * `detect.rate`	: the detected (`#UMI > 0`) rate for a gene in all tissue spots.
 
 Here is a plot showing the distributions of gene proportion in spots for the first 100 genes. And the points (genes) are colored according to whether they belongs to mitochondrial, ribosome, or other genes.
-
-```{r genePropPlot, echo=F, message=F, warning=F, dpi=300, fig.width=8, fig.height=8, fig.align="center"}
-knitr::include_graphics(file.path(savePath_basic, "QC/geneProp.png"))
-```
+<center>
+    <img src=".\\QC\\geneProp.png" width="90%"/>
+</center>
 <p align="right">(Hi-res image: <a href='./QC/geneProp.png'>view</a>)</p>
 
 The plot below shows the relationship between `detect.rate` and `prop.median`.
 
-```{r geneRel, echo=F, message=F, warning=F, dpi=300, fig.width=4, fig.height=4, fig.align="center", out.width='40%'}
-knitr::include_graphics(file.path(savePath_basic, "QC/gene-dr-med.png"))
-```
+<center>
+    <img src=".\\QC\\gene-dr-med.png" width="40%"/>
+</center>
 <p align="right">(Hi-res image: <a href='./QC/gene-dr-med.png'>view</a>)</p>
 
 
@@ -208,3 +186,9 @@ Running this script generates following files:
 [geneManifest.txt](./data/geneManifest.txt).
 6. **SeuratObject after stStatistic** :
 [SeuratObject](./data/spatial_stat.RDS).
+
+<br>
+
+--------------------------------------
+&copy; [G-Lab](http://lifeome.net/glab/jgu/),   [Tsinghua University](http://www.tsinghua.edu.cn)
+

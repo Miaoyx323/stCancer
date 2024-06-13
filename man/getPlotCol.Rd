@@ -10,7 +10,7 @@ getPlotCol(num)
 \item{num}{}
 }
 \value{
-
+Number of columns of plots
 }
 \description{
 Get plots col.num

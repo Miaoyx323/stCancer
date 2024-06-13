@@ -7,7 +7,7 @@
 ggplot_config(base.size = 8)
 }
 \value{
-
+plots
 }
 \description{
 Default ggplot config

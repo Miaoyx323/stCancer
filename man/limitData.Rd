@@ -7,10 +7,14 @@
 limitData(data, min = NULL, max = NULL)
 }
 \arguments{
-\item{object}{max}
+\item{data}{data}
+
+\item{min}{min}
+
+\item{max}{max}
 }
 \value{
-
+A new data
 }
 \description{
 limit data between min and max

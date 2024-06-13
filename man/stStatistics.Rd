@@ -9,12 +9,22 @@ stStatistics(
   dataPath,
   savePath,
   species = "human",
+  assay = "Spatial",
+  slice = "slice1",
+  h5 = TRUE,
+  gene.column = 2,
   crop = TRUE,
   rm.isolated = TRUE,
+  filter.matrix = TRUE,
   region.threshold = 3,
+  to.upper = FALSE,
+  min.gene = 200,
+  min.nUMI = 500,
+  max.gene = Inf,
+  max.nUMI = Inf,
+  min.spot = 3,
   authorName = NULL,
-  genReport = TRUE,
-  ...
+  genReport = TRUE
 )
 }
 \arguments{
@@ -25,12 +35,24 @@ Under this path, folders 'filtered_feature_bc_matrix' and 'raw_feature_bc_matrix
 
 \item{savePath}{A path to save the results files(suggest to create a foler named by sample name).}
 
+\item{species}{human or mouse}
+
+\item{assay}{The name of assay of SeuratObject}
+
+\item{slice}{The name of slice of SeuratObject}
+
+\item{h5}{Whether to read h5 file or file folder}
+
+\item{gene.column}{If reading file folder, which column is genes}
+
 \item{crop}{A logical value indicating whether to crop the image during plotting}
 
 \item{rm.isolated}{A logical value indicating whether to remove isolated spots}
 
 \item{region.threshold}{A integer value, if the area of connected domain of spots are less than `region.threshold`,
 they will be removed.}
+
+\item{to.upper}{Whether to capitalize gene names}
 
 \item{authorName}{A character string for authors name and will be shown in the report.}
 

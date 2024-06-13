@@ -1,14 +1,10 @@
 ### `r h.i`.`r h.ii` CNV analysis
-In order to explore copy number variations, we perform CNV analysis on the sample referring to the method of R package [`infercnv`](https://github.com/broadinstitute/inferCNV/wiki). Then we calculate a smoothed malignancy score based on the CNV profile. 
+In order to explore copy number variations, we perform CNV analysis on the sample referring to the method of `r CNV.analysis.func`. Below is the result of inferred tumor areas and normal areas.
 
-Following is the heatmap of CNV score.
-
-
-```{r CNVhaet, echo=F, message=F, warning=F, dpi=500, fig.width=8, fig.height=6, fig.align="center", out.width='80%'}
-knitr::include_graphics(
-    file.path(savePath_basic, "malignancy/cnv-heat.png"))
-```
-<p align="right">(Hi-res image: <a href='./malignancy/cnv-heat.png'>view</a>)</p>
+<center>
+    <img src=".\\malignancy\\cnv-sp.png" width="80%"/>
+</center>
+<p align="right">(Hi-res image: <a href='./malignancy/cnv-sp.png'>view</a>)</p>
 
 ```{r echo=F}
 h.ii <- h.ii + 1

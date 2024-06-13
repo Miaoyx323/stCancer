@@ -1,20 +1,26 @@
 #' stAnnotation
 #'
-#' perform statistic
+#' perform stAnnotation
 #'
-#' @param object A Seurat object
-#' @param savePath A path to save the results files(suggest to create a foler named by sample name).
-#' @param rm.mito A logical value indicating whether to remove
+#' @param object A Seurat object after stStatistics
+#' @param savePath A path to save the results files(suggest to use the same path as stStatistics).
+#' @param rm.mito A logical value indicating whether to remove mitochondrial genes
+#' @param rm.ribo A logical value indicating whether to remove ribosomal
+#' @param assay Assay
+#' @param normalization.method The normalization method, SCTransform or Normalization
+#' @param ndims The number of PCs used for analysis
+#' @param topGeneNum The number of top genes shown in the hvg figure
+#'
 #' @param crop A logical value indicating whether to crop the image during plotting
-#' @param rm.isolated A logical value indicating whether to remove isolated spots
+#' @param CNV.ref.object A reference seurat object used in inferCNV
 #' @param authorName A character string for authors name and will be shown in the report.
 #' @param genReport A logical value indicating whether to generate a .html/.md report (suggest to set TRUE).
-#' @param CNV.ref.object A reference seurat object used in inferCNV
 #'
 #'
-#' @return A Seurat object after statistic
+#' @return A list of results
 #' @export
 #'
+#' @import patchwork
 #' @import Seurat Matrix ggplot2 knitr patchwork
 #' @importFrom dplyr "%>%" top_n group_by
 #' @importFrom markdown markdownToHTML
@@ -27,8 +33,9 @@ stAnnotation <- function(object,
                          # rm.ig = T,
                          assay = NULL,
                          normalization.method = 'SCTransform',
+                         ndims = 10,
                          topGeneNum = 10,
-                         clst.resolution = 0.4,
+                         clst.resolution = 0.8,
                          n.markers = 5,
                          rank = 5,
                          species = "human",
@@ -57,8 +64,6 @@ stAnnotation <- function(object,
 
     sampleName <- object@project.name
 
-    savePath <- filePathCheck(savePath)
-
     savePath <- R.utils::getAbsolutePath(savePath)
 
     savePath_basic <- file.path(savePath, sampleName)
@@ -74,20 +79,19 @@ stAnnotation <- function(object,
         assay <- object@active.assay
     }
 
-    # gene.manifest <- read.table(file.path(savePath_data, "geneManifest.txt"),
-    #                             header = T, sep = "\t", stringsAsFactors = F)
-    # gene.manifest <- subset(gene.manifest, nSpot >= 3)
-    # gene.manifest <- subset(gene.manifest, Annotation == "other")
-
-    # remove mito, ribo or ig genes if needed
-    if(rm.mito){
-        mito.genes <- grep('^MT-', rownames(object), value = TRUE)
-        object <- object[!rownames(object) %in% mito.genes, ]
-    }
-    if(rm.ribo){
-        ribo.genes <- grep('^RPL|^RPS|^MRPL|^MRPS', rownames(object), value = TRUE)
-        object <- object[!rownames(object) %in% ribo.genes, ]
-    }
+    # remove mito, ribo genes if needed
+    suppressWarnings(
+        if(rm.mito){
+            mito.genes <- grep('^MT-', rownames(object), value = TRUE)
+            object <- object[!(rownames(object) %in% mito.genes), ]
+        }
+    )
+    suppressWarnings(
+        if(rm.ribo){
+            ribo.genes <- grep('^RPL|^RPS|^MRPL|^MRPS', rownames(object), value = TRUE)
+            object <- object[!(rownames(object) %in% ribo.genes), ]
+        }
+    )
     # if(rm.ig){
     #   ig.genes <- grep('^IG', rownames(object), value = TRUE)
     #   object <- object[!rownames(object) %in% ig.genes, ]
@@ -103,12 +107,12 @@ stAnnotation <- function(object,
         object <- FindVariableFeatures(object, verbose = FALSE)
     }
     object <- RunPCA(object, assay = object@active.assay, verbose = FALSE)
-    object <- FindNeighbors(object, reduction = "pca", dims = 1:30, verbose = FALSE)
+    object <- FindNeighbors(object, reduction = "pca", dims = 1:ndims, verbose = FALSE)
     object <- FindClusters(object, resolution = clst.resolution, verbose = FALSE)
     suppressWarnings(
-        object <- RunUMAP(object, reduction = "pca", dims = 1:30, verbose = F)
+        object <- RunUMAP(object, reduction = "pca", dims = 1:ndims, verbose = F)
     )
-    object <- RunTSNE(object, reduction = "pca", dims = 1:30, verbose = F,
+    object <- RunTSNE(object, reduction = "pca", dims = 1:ndims, verbose = F,
                       check_duplicates = FALSE)
 
     top_gene <- head(VariableFeatures(object), topGeneNum)

@@ -66,12 +66,10 @@ results <- stAnnotation(object,
                         savePath = save.path, 
                         species = "human", 
                         bool.NMF = T, 
-                        bool.CellCycle = T, 
                         bool.CellType = T, 
                         bool.CNV = T, 
                         bool.interaction = T, 
-                        bool.EMT = T, 
-                        bool.stem = T)
+                        bool.tumor.feature = T)
 object <- results$object
 ```
 
